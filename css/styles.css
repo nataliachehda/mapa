@@ -1,0 +1,30 @@
+.card {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: inline-block;
+    width: calc(25% - 10px);
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.card h3 {
+    margin-top: 0;
+}
+
+.rating-buttons {
+    margin-top: 10px;
+}
+
+.rating-buttons button {
+    margin-right: 5px;
+}
+
+.rating-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.rating-item {
+    margin-bottom: 10px;
+}
