@@ -1,4 +1,4 @@
-let map = L.map('map').setView([-31.417, -64.183], 13); // Se establece la ubicación de Córdoba y el nivel de zoom inicial
+let map = L.map('map').setView([51.510067, -0.134024], 17); // Se establece la ubicación de Piccadilly Circus y el nivel de zoom inicial
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -6,59 +6,60 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 
 function createCard(place) {
-    let card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <h3>${place.name}</h3>
-      <p>${place.category}</p>
-      <p>${place.address}</p>
-      <div class="rating-container">
-        ${getRatingItems().join('')}
+  let card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <h3>${place.name}</h3>
+    <p>${place.category}</p>
+    <p>${place.address}</p>
+    <p>${place.wheelchair}</p>
+    <div class="rating-container">
+      ${getRatingItems().join('')}
+    </div>
+  `;
+
+  return card;
+}
+
+function getRatingItems() {
+  let ratingItems = [
+    'Rampa en entrada',
+    'Ángulo de la rampa',
+    'Puertas corredizas',
+    'Personal asistente',
+    'Ancho de los pasillos',
+    'Mobiliario y decoración',
+    'Ascensor',
+    'Desniveles',
+    'Baños accesibles',
+    'Altura de mostradores',
+    'Lugar reservado estacionamiento'
+  ];
+
+  return ratingItems.map((item) => {
+    return `
+      <div class="rating-item">
+        <label for="${getItemId(item)}">${item}:</label>
+        <select id="${getItemId(item)}">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
       </div>
     `;
-  
-    return card;
-  }
-  
-  function getRatingItems() {
-    let ratingItems = [
-      'Rampa en entrada',
-      'Ángulo de la rampa',
-      'Puertas corredizas',
-      'Personal asistente',
-      'Ancho de los pasillos',
-      'Mobiliario y decoración',
-      'Ascensor',
-      'Desniveles',
-      'Baños accesibles',
-      'Altura de mostradores',
-      'Lugar reservado estacionamiento'
-    ];
-  
-    return ratingItems.map((item) => {
-      return `
-        <div class="rating-item">
-          <label for="${getItemId(item)}">${item}:</label>
-          <select id="${getItemId(item)}">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-          </select>
-        </div>
-      `;
-    });
-  }
-  
-  function getItemId(item) {
-    return item.toLowerCase().replace(/\s/g, '-');
-  }
+  });
+}
 
-  function ratePlace(name, rating) {
-    // Aquí puedes implementar la lógica para registrar la puntuación en tu sistema
-    console.log(`Lugar: ${name}, Puntuación: ${rating}`);
-  }
+function getItemId(item) {
+  return item.toLowerCase().replace(/\s/g, '-');
+}
+
+function ratePlace(name, rating) {
+  // Aquí puedes implementar la lógica para registrar la puntuación en tu sistema
+  console.log(`Lugar: ${name}, Puntuación: ${rating}`);
+}
 
 function fetchPlaces() {
   let bounds = map.getBounds();
@@ -71,8 +72,29 @@ function fetchPlaces() {
                   node["amenity"="park"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
                   node["amenity"="restaurant"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
                   node["shop"="supermarket"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["shop"="mall"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["amenity"="police"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
                   node["amenity"="veterinary"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
                   node["tourism"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["wheelchair"="yes"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["wheelchair"="limited"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["wheelchair"="no"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["wheelchair"="designated"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["highway"="steps"]["wheelchair"="no"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["public_transport"="platform"]["wheelchair"="yes"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["public_transport"="platform"]["wheelchair"="limited"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["public_transport"="platform"]["wheelchair"="no"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["tourism"="hotel"]["wheelchair"="yes"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["amenity"="cinema"]["wheelchair"="limited"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["tourism"="museum"]["wheelchair"="yes"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["amenity"="toilets"]["toilets:wheelchair"="yes"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["amenity"="toilets"]["toilets:wheelchair"="no"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["amenity"="toilets"]["wheelchair"="yes"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["amenity"="toilets"]["wheelchair"="limited"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["amenity"="toilets"]["wheelchair"="no"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["wheelchair"="yes"]["amenity"="toilets"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["wheelchair"="limited"]["amenity"="toilets"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
+                  node["wheelchair"="no"]["amenity"="toilets"](${bounds.getSouth()},${bounds.getWest()},${bounds.getNorth()},${bounds.getEast()});
                 );
                 out body;`;
 
@@ -89,8 +111,9 @@ function fetchPlaces() {
         let name = place.tags.name || 'Sin nombre';
         let category = place.tags.amenity || place.tags.shop || place.tags.tourism || 'Sin categoría';
         let address = place.tags['addr:street'] || 'Sin dirección';
+        let wheelchair = getWheelchairAccessibility(place.tags);
 
-        let card = createCard({ name, category, address });
+        let card = createCard({ name, category, address, wheelchair });
         cardsContainer.appendChild(card);
       });
     })
@@ -98,6 +121,71 @@ function fetchPlaces() {
       console.error('Error al obtener los lugares:', error);
     });
 }
+
+function getWheelchairAccessibility(tags) {
+  let accessibility = [];
+
+  if (tags.wheelchair === 'yes') {
+    accessibility.push('Acceso completo para silla de ruedas');
+  }
+  if (tags.wheelchair === 'limited') {
+    accessibility.push('Acceso parcial para silla de ruedas');
+  }
+  if (tags.wheelchair === 'no') {
+    accessibility.push('Sin acceso para silla de ruedas');
+  }
+  if (tags.wheelchair === 'designated') {
+    accessibility.push('Área designada para silla de ruedas');
+  }
+  if (tags['highway'] === 'steps' && tags.wheelchair === 'no') {
+    accessibility.push('Escaleras, sin acceso para silla de ruedas');
+  }
+  if (tags['public_transport'] === 'platform') {
+    if (tags.wheelchair === 'yes') {
+      accessibility.push('Plataforma de transporte público con acceso para silla de ruedas');
+    }
+    if (tags.wheelchair === 'limited') {
+      accessibility.push('Plataforma de transporte público con acceso parcial para silla de ruedas');
+    }
+    if (tags.wheelchair === 'no') {
+      accessibility.push('Plataforma de transporte público sin acceso para silla de ruedas');
+    }
+  }
+  if (tags['tourism'] === 'hotel' && tags.wheelchair === 'yes') {
+    accessibility.push('Hotel con acceso para silla de ruedas');
+  }
+  if (tags['amenity'] === 'cinema' && tags.wheelchair === 'limited') {
+    accessibility.push('Cine con acceso limitado para silla de ruedas');
+  }
+  if (tags['tourism'] === 'museum' && tags.wheelchair === 'yes') {
+    accessibility.push('Museo con acceso para silla de ruedas');
+  }
+  if (tags['amenity'] === 'toilets') {
+    if (tags['toilets:wheelchair'] === 'yes') {
+      accessibility.push('Baño accesible para silla de ruedas');
+    }
+    if (tags['toilets:wheelchair'] === 'no') {
+      accessibility.push('Baño no accesible para silla de ruedas');
+    }
+    if (tags.wheelchair === 'yes') {
+      accessibility.push('Baño público totalmente equipado para silla de ruedas');
+    }
+    if (tags.wheelchair === 'limited') {
+      accessibility.push('Baño público con acceso parcial para silla de ruedas');
+    }
+    if (tags.wheelchair === 'no') {
+      accessibility.push('Baño público sin acceso para silla de ruedas');
+    }
+  }
+
+  if (accessibility.length === 0) {
+    return 'No se dispone de información de accesibilidad';
+  }
+
+  return accessibility.join(', ');
+}
+
+
 
 map.on('moveend', fetchPlaces);
 fetchPlaces();
