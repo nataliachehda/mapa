@@ -21,10 +21,14 @@ svg {
     justify-content: center;
     align-items: center;
 }
-
+h1 {
+    color: #0043B9;
+}
 h2 {
     margin: 50px;
     text-align: center;
+    color: #0043B9;
+
 }
 
 .card {
