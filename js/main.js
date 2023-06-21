@@ -185,7 +185,5 @@ function getWheelchairAccessibility(tags) {
   return accessibility.join(', ');
 }
 
-
-
 map.on('moveend', fetchPlaces);
 fetchPlaces();

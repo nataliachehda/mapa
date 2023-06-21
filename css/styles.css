@@ -4,7 +4,6 @@ body {
     align-items: center;
     font-family: 'Montserrat', sans-serif;
     background-color: antiquewhite;
-
 }
 
 .logo {
@@ -21,14 +20,15 @@ svg {
     justify-content: center;
     align-items: center;
 }
+
 h1 {
     color: #0043B9;
 }
+
 h2 {
     margin: 50px;
     text-align: center;
     color: #0043B9;
-
 }
 
 .card {
