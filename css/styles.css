@@ -16,11 +16,10 @@ body {
 svg {
     margin-right: 20px;
     border-radius: 10%;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     justify-content: center;
     align-items: center;
-    border: solid black 1px;
 }
 
 h1 {
