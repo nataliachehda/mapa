@@ -1,4 +1,4 @@
-let map = L.map('map').setView([51.510067, -0.134024], 17); // Se establece la ubicación de Piccadilly Circus y el nivel de zoom inicial
+let map = L.map('map').setView([51.510067, -0.134024], 17);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
@@ -17,6 +17,10 @@ function createCard(place) {
       ${getRatingItems().join('')}
     </div>
   `;
+
+  card.addEventListener('click', () => {
+    highlightMarker(place.marker);
+  });
 
   return card;
 }
@@ -57,7 +61,6 @@ function getItemId(item) {
 }
 
 function ratePlace(name, rating) {
-  // Aquí puedes implementar la lógica para registrar la puntuación en tu sistema
   console.log(`Lugar: ${name}, Puntuación: ${rating}`);
 }
 
@@ -179,11 +182,22 @@ function getWheelchairAccessibility(tags) {
   }
 
   if (accessibility.length === 0) {
-    return 'No se dispone de información de accesibilidad';
+    return 'Información de accesibilidad no disponible';
   }
 
   return accessibility.join(', ');
 }
 
-map.on('moveend', fetchPlaces);
+function highlightMarker(marker) {
+  let allMarkers = document.getElementsByClassName('leaflet-marker-icon');
+
+  for (let i = 0; i < allMarkers.length; i++) {
+    allMarkers[i].style.filter = '';
+  }
+
+  marker.options.icon.options.className += ' highlighted-marker';
+  marker.getElement().style.filter = 'drop-shadow(0px 0px 5px yellow)';
+}
+
 fetchPlaces();
+map.on('moveend', fetchPlaces);
