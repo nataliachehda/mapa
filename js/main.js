@@ -28,16 +28,13 @@ function createCard(place) {
 function getRatingItems() {
   let ratingItems = [
     'Rampa en entrada',
-    'Ángulo de la rampa',
     'Puertas corredizas',
     'Personal asistente',
-    'Ancho de los pasillos',
-    'Mobiliario y decoración',
+    'Pasillos',
     'Ascensor',
     'Desniveles',
     'Baños accesibles',
-    'Altura de mostradores',
-    'Lugar reservado estacionamiento'
+    'Estacionamiento reservado'
   ];
 
   return ratingItems.map((item) => {
